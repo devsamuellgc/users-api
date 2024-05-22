@@ -17,4 +17,20 @@ async function deleteUser(req, res) {
   return res.json({ data: user, message: "Usuário deletado com sucesso!" });
 }
 
-export { listUsers, listUser, deleteUser };
+async function createUser(req, res) {
+  const user = req.body;
+  await usersServices.createUser(user);
+  return res.json({ data: user, message: "Usuário criado com sucesso!" });
+}
+
+async function editUser(req, res) {
+  const id = req.params.id;
+  const user = req.body;
+  const editedUser = await usersServices.editUser(id, user);
+  return res.json({
+    data: editedUser,
+    message: "Usuário editado com sucesso!",
+  });
+}
+
+export { listUsers, listUser, deleteUser, createUser, editUser };

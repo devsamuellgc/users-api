@@ -15,4 +15,14 @@ async function removeUser(id) {
   return removedUser;
 }
 
-export { listUsers, listUser, removeUser };
+async function createUser(user) {
+  const createdUser = await usersRepository.createUser(user);
+  return createdUser;
+}
+
+async function editUser(id, user) {
+  const editedUser = await usersRepository.editUser(id, user);
+  return editedUser;
+}
+
+export { listUsers, listUser, removeUser, createUser, editUser };
