@@ -14,9 +14,8 @@ async function listUser(id) {
 
 async function removeUser(id) {
   const conn = await pool.getConnection();
-  const user = await listUser(id);
-  await conn.query(`DELETE FROM users WHERE id = ${id}`);
-  return user;
+  const response = await conn.query(`DELETE FROM users WHERE id = ${id}`);
+  return response.affectedRows;
 }
 
 async function createUser(user) {
