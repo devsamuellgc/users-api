@@ -20,9 +20,17 @@ async function createUser(user) {
   return createdUser;
 }
 
+async function login(data) {
+  const user = await usersRepository.listUserByEmail(data.email);
+  if (data.password === user.password) {
+    return true;
+  }
+  return false;
+}
+
 async function editUser(id, user) {
   const editedUser = await usersRepository.editUser(id, user);
   return editedUser;
 }
 
-export { listUsers, listUser, removeUser, createUser, editUser };
+export { listUsers, login, listUser, removeUser, createUser, editUser };

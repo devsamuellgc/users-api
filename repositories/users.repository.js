@@ -12,6 +12,12 @@ async function listUser(id) {
   return user;
 }
 
+async function listUserByEmail(email) {
+  const conn = await pool.getConnection();
+  const user = await conn.query(`SELECT * FROM users WHERE email = '${email}'`);
+  return user;
+}
+
 async function removeUser(id) {
   const conn = await pool.getConnection();
   const response = await conn.query(`DELETE FROM users WHERE id = ${id}`);
@@ -49,4 +55,11 @@ async function editUser(id, editedUser) {
   return user;
 }
 
-export { listUsers, listUser, removeUser, createUser, editUser };
+export {
+  listUsers,
+  listUser,
+  removeUser,
+  createUser,
+  editUser,
+  listUserByEmail,
+};

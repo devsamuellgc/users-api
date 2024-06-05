@@ -62,6 +62,12 @@ async function createUser(req, res) {
   return res.json({ data: user, message: "Usuário criado com sucesso!" });
 }
 
+async function login(req, res) {
+  const user = req.body;
+  await usersServices.login(user);
+  return res.json({ message: "Login realizado com sucesso!" });
+}
+
 async function editUser(req, res) {
   const id = req.params.id;
   const user = req.body;
@@ -72,4 +78,4 @@ async function editUser(req, res) {
   });
 }
 
-export { listUsers, listUser, deleteUser, createUser, editUser };
+export { listUsers, listUser, deleteUser, createUser, login, editUser };
