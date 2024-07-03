@@ -1,28 +1,26 @@
-import { pool } from "../db.js";
+import { connection } from "../db.js";
 
 async function listExpenses() {
-  const conn = await pool.getConnection();
-  const rows = await conn.query("SELECT * FROM expenses");
+  const rows = await connection.query("SELECT * FROM expenses");
   return rows;
 }
 
 async function listExpense(id) {
-  const conn = await pool.getConnection();
-  const expense = await conn.query(`SELECT * FROM expenses WHERE id = ${id}`);
+  const expense = await connection.query(
+    `SELECT * FROM expenses WHERE id = ${id}`
+  );
   return expense;
 }
 
 async function removeExpense(id) {
-  const conn = await pool.getConnection();
   const expense = await listExpense(id);
-  await conn.query(`DELETE FROM expenses WHERE id = ${id}`);
+  await connection.query(`DELETE FROM expenses WHERE id = ${id}`);
   return expense;
 }
 
 async function createExpense(expense) {
-  const conn = await pool.getConnection();
   const keys = Object.keys(expense);
-  const createdExpense = await conn.query(`
+  const createdExpense = await connection.query(`
       INSERT INTO expenses (${keys.map((chave) => chave)})
       VALUES (${keys.map((chave) =>
         typeof expense[chave] === "string"
@@ -34,7 +32,6 @@ async function createExpense(expense) {
 }
 
 async function editExpense(id, editedExpense) {
-  const conn = await pool.getConnection();
   const chaves = Object.keys(editedExpense);
   const query = `
     UPDATE expenses
@@ -45,8 +42,8 @@ async function editExpense(id, editedExpense) {
     )}
     WHERE id = ${id};
     `;
-  await conn.query(query);
-  const expense = await conn.query(`
+  await connection.query(query);
+  const expense = await connection.query(`
     SELECT * FROM expenses WHERE id = '${id}';
     `);
   return expense;

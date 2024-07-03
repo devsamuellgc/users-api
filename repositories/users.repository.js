@@ -1,33 +1,30 @@
-import { pool } from "../db.js";
+import { connection } from "../db.js";
 
 async function listUsers() {
-  const conn = await pool.getConnection();
-  const rows = await conn.query("SELECT * FROM users");
+  const rows = await connection.query("SELECT * FROM users");
   return rows;
 }
 
 async function listUser(id) {
-  const conn = await pool.getConnection();
-  const user = await conn.query(`SELECT * FROM users WHERE id = ${id}`);
+  const user = await connection.query(`SELECT * FROM users WHERE id = ${id}`);
   return user;
 }
 
 async function listUserByEmail(email) {
-  const conn = await pool.getConnection();
-  const user = await conn.query(`SELECT * FROM users WHERE email = '${email}'`);
+  const user = await connection.query(
+    `SELECT * FROM users WHERE email = '${email}'`
+  );
   return user;
 }
 
 async function removeUser(id) {
-  const conn = await pool.getConnection();
-  const response = await conn.query(`DELETE FROM users WHERE id = ${id}`);
+  const response = await connection.query(`DELETE FROM users WHERE id = ${id}`);
   return response.affectedRows;
 }
 
 async function createUser(user) {
-  const conn = await pool.getConnection();
   const keys = Object.keys(user);
-  const createdUser = await conn.query(`
+  const createdUser = await connection.query(`
     INSERT INTO users (${keys.map((chave) => chave)})
     VALUES (${keys.map((chave) =>
       typeof user[chave] === "string" ? `'${user[chave]}'` : user[chave]
@@ -37,7 +34,6 @@ async function createUser(user) {
 }
 
 async function editUser(id, editedUser) {
-  const conn = await pool.getConnection();
   const chaves = Object.keys(editedUser);
   const query = `
   UPDATE users
@@ -48,8 +44,8 @@ async function editUser(id, editedUser) {
   )}
   WHERE id = ${id};
   `;
-  await conn.query(query);
-  const user = await conn.query(`
+  await connection.query(query);
+  const user = await connection.query(`
   SELECT * FROM users WHERE id = '${id}';
   `);
   return user;

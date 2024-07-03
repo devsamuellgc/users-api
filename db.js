@@ -1,9 +1,12 @@
-import mariadb from "mariadb";
+import pg from "pg";
+const { Pool } = pg;
 
-export const pool = mariadb.createPool({
-  host: "localhost",
-  user: "root",
-  password: "root",
-  database: "fs25_db",
-  port: 3309,
+const connection = new Pool({
+  host: "dpg-cpqcrg1u0jms738tmi7g-a",
+  username: "root",
+  password: "pw9vQfKT2dDC8JwXJRzvic3O8Ef9z2GV",
+  database: "users_db_pejd",
+  port: 5432,
 });
+
+export { connection };
